@@ -82,6 +82,11 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
                        float(args[0]), float(args[1]), float(args[2]),
                        float(args[3]), step_3d)
 
+            matrix_mult( csystems[-1], polygons )
+	    draw_lines(edges, screen, color)
+            draw_polygons(polygons, screen, color)
+	    polygons = []
+
         elif line == 'torus':
             #print 'TORUS\t' + str(args)
             add_torus(polygons,
@@ -93,6 +98,10 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
             add_box(polygons,
                     float(args[0]), float(args[1]), float(args[2]),
                     float(args[3]), float(args[4]), float(args[5]))
+	    matrix_mult( csystems[-1], polygons )
+	    draw_lines(edges, screen, color)
+            draw_polygons(polygons, screen, color)
+	    polygons = []
 
         elif line == 'circle':
             #print 'CIRCLE\t' + str(args)
@@ -119,12 +128,12 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
         elif line == 'scale':
             #print 'SCALE\t' + str(args)
             t = make_scale(float(args[0]), float(args[1]), float(args[2]))
-            matrix_mult(t, transform)
+            matrix_mult(csystems, t)
 
         elif line == 'move':
             #print 'MOVE\t' + str(args)
             t = make_translate(float(args[0]), float(args[1]), float(args[2]))
-            matrix_mult(t, transform)
+            matrix_mult(csystems[-1], t)
 
         elif line == 'rotate':
             #print 'ROTATE\t' + str(args)
@@ -136,7 +145,7 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
                 t = make_rotY(theta)
             else:
                 t = make_rotZ(theta)
-            matrix_mult(t, transform)
+            matrix_mult(csystems[-1], t)
 
         elif line == 'ident':
             ident(transform)
@@ -158,4 +167,9 @@ def parse_file( fname, edges, polygons, csystems, screen, color ):
                 display(screen)
             else:
                 save_extension(screen, args[0])
+
+	elif line == 'push':
+	    push(csystems)
+	elif line == 'pop':
+	    csystems.pop()
         c+= 1

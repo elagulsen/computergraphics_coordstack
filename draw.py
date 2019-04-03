@@ -2,6 +2,10 @@ from display import *
 from matrix import *
 from gmath import *
 
+def push( stack):
+    stack_top =  [stack[-1][x][:] for x in range(len(stack[-1]))]
+    stack.append(stack_top) 
+
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x0, y0, z0)
     add_point(polygons, x1, y1, z1)
