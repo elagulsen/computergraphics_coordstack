@@ -109,7 +109,6 @@ def matrix_mult( m1, m2 ):
         #get a copy of the next point
         tmp = row[:]
         for r in range(4):
-	    print_matrix(m1)
             m2[point][r] = (m1[0][r] * tmp[0] +
                             m1[1][r] * tmp[1] +
                             m1[2][r] * tmp[2] +
